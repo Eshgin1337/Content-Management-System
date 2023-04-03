@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Login page</title>
+
+      <!-- GOOGLE FONTS -->
+      <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
+      <link href="/plugins/material/css/materialdesignicons.min.css" rel="stylesheet" />
+      <link href="/plugins/simplebar/simplebar.css" rel="stylesheet" />
+      <!-- PLUGINS CSS STYLE -->
+      <link href="/plugins/nprogress/nprogress.css" rel="stylesheet" />
+
+      <!-- MONO CSS -->
+      <link id="main-css-href" rel="stylesheet" href="/css/style.css" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+
+      <link href="/images/favicon.png" rel="shortcut icon" />
+
+      <script src="/plugins/nprogress/nprogress.js"></script>
+    </head>
+
+  </head>
+
+  <body class="bg-light-gray" id="body">
+    <div class="background">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh">
+      <div class="d-flex flex-column justify-content-between">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10">
+            <div class="card card-default mb-0">
+              <div class="card-header pb-0">
+                <div class="app-brand w-100 d-flex justify-content-center border-bottom-0">
+                </div>
+              </div>
+              <% if (emailError) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Something went wrong!</strong>
+                  <%= emailError %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% } %>
+              <% if (usernameError) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Something went wrong!</strong>
+                  <%= usernameError %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% } %>
+              <% if (roleError) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Something went wrong!</strong>
+                  <%= roleError %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% } %>
+              <% if (passwordErrors) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Something went wrong!</strong>
+                  <%= passwordErrors %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% } %>
+              <div class="card-body px-5 pb-5 pt-0">
+
+                <h4 class="text-dark mb-6 text-center">
+                  <span class="brand-name text-dark">Register user</span>
+                </h4>
+
+                <form action="/registeruser" method="post">
+                  <div class="row">
+                    <div class="form-group col-md-12 mb-4">
+                      <input type="email" class="form-control input-lg" name="email" id="email"
+                        placeholder="Email">
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                      <input type="text" class="form-control input-lg" name="username" id="username"
+                        placeholder="Username">
+                    </div>
+                    <div class="form-group col-md-12">
+                      <select class="form-group col-md-12 form-select" id="userRole" name="userRole">
+                        <option value="user">
+                          User
+                        </option>
+                        <option value="editor">
+                          Editor
+                        </option>
+                        <option value="admin">
+                          Admin
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                      <input type="password" class="form-control input-lg" name="password" id="password"
+                        placeholder="Password">
+                    </div>
+                    <div class="col-md-12">
+                      <button type="submit" class="btn btn-primary btn-pill mb-4">Register</button>
+                      <p>Want to back home page?
+                        <a class="text-blue" href="https://mydata.az/">Home page</a>
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+</html>

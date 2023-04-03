@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Charts / Chart.js - NiceAdmin Bootstrap Template</title>
+  <title>Data Blog Page</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -25,6 +25,7 @@
   <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="/assets/css/style.css" rel="stylesheet">
@@ -37,7 +38,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="https://mpng.subpng.com/20190216/k/kisspng-carnegie-mellon-university-advanced-database-syste-project-2-concurrent-index-cmu-15-721-adva-5c68a8fdf135a9.916348971550362877988.jpg"
-                    alt="Logo" style="width: 40px;" class="rounded-pill">
+                    alt="Logo" style="width: 40px;" class="rounded-pill nav-link bi bi-list toggle-sidebar-btn">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,37 +46,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link bi bi-list toggle-sidebar-btn" href="#">Menu</a>
+                  <li class="nav-item" style="white-space: nowrap;">
+                    <a class="nav-link" href="/about">About us</a>
+                  </li>
+                  <% if (role==="admin" ) { %>
+                    <li class="nav-item" style="white-space: nowrap;">
+                      <a class="nav-link" href="/compose">Add tutorial</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about">About us</a>
+                    <li class="nav-item" style="white-space: nowrap;">
+                      <a class="nav-link" href="/systemusers">Users</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="login">Login</a>
+                  <% } else if (role==="editor" ) {%>
+                    <li class="nav-item" style="white-space: nowrap;">
+                      <a class="nav-link" href="/compose">Add tutorial</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="compose">Add tutorial</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Tutorials
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li> <a class="dropdown-item" href="#"> Mysql </a></li>
-                            <li> <a class="dropdown-item" href="#"> Mongodb </a></li>
-                            <li> <a class="dropdown-item" href="#"> PostgreSQL </a></li>
-                        </ul>
-                    </li>
+                  <% } %>
                 </ul>
-                <form class="d-flex">
-                    <input type="search" placeholder="Search" class="form-control me-2" aria-label="search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
@@ -87,128 +73,75 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="/">
           <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <span>Home Page</span>
         </a>
       </li><!-- End Dashboard Nav -->
       <% posts.forEach(function(post){ %>
         <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#<%= post.title %>-nav" data-bs-toggle="collapse" href="#">
+          <a class="nav-link collapsed" data-bs-target="#a<%- post.id %>-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-book-fill"></i><span><%= post.title %> </span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-          <ul id="<%= post.title %>-nav" class="nav-content collapse " data-bs-parent="#<%= post.title %>-nav">
-            <li>
-              <a href="/posts/<%= post.id %> ">
-                <i class="bi bi-circle"></i><span><%= post.subtitle %></span>
-              </a>
-            </li>
+          <ul id="a<%- post.id %>-nav" class="nav-content collapse " data-bs-parent="#<%= post.title %>-nav"> <!--  data-bs-parent="#<%= post.title %>-nav" also possible-->
+            <% post.contents.forEach(element => { %>
+              <li>
+                <a href="/posts/<%= post.title %>/<%= element.subtitleName %>">
+                  <i class="bi bi-circle"></i><span><%= element.subtitleName %></span>
+                </a>
+              </li>
+            <% }); %> 
           </ul>
         </li>
       <% }) %>
       
 
-
-      <li class="nav-heading">Pages</li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
-        </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-error-404.html">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li>
+      <% if (role) { %>
+        <li class="nav-heading mt-5">Pages</li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="logout">
+            <i class="bi bi-arrow-right-square"></i>
+            <span>Log out</span>
+          </a>
+        </li>
+      <% } %>
 
     </ul>
 
   </aside>
 
 
-<main id="main" class="main">
+  <main id="main" class="main">
+      <section class="maincontent" id="maincontent">
+          <div class="row">
+              <h1>Home</h1>
+              <p> <%= startingContent %> </p>
 
-    <div class="pagetitle">
-        <h1>Chart.js</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">Charts</li>
-                <li class="breadcrumb-item active">Chart.js</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-
-    <p>Chart.JS Examples. You can check the <a href="https://www.chartjs.org/docs/latest/samples/"
-            target="_blank">official website</a> for more examples.</p>
-
-    <section class="section">
-        <div class="row">
-
-            <h1>Home</h1>
-                <p> <%= startingContent %> </p>
-
-                <% var index = 0; posts.forEach(function(post){ %>
+              <% var index = 0; posts.forEach(function(post){ %>
+                
+                <h1><%=post.title%></h1>
                   
-                  <h1><%=post.title%></h1>
-                  <h3><%=post.subtitle%></h3>
+                <% post.contents.forEach(element=> { %>
+                  <h3>
+                    <%-element.subtitleName%>
+                  </h3>
                   <div class="container" id="container">
-                    <%-post.content%>
+                    <%-element.subtitleContent%>
                   </div>
-                    
-                    <a href="/posts/<%=post._id%>">Read More</a>
-                  </p>
-            
-            
-                <% }) %> 
+                  <hr>
+                <% }); %>
 
+              <% }) %> 
+          </div>
+      </section class="footer" id="footer">
 
-        </div>
-    </section>
+  </main>
 
-</main>
+  <!-- <aside id="sidebarright" class="sidebarright">
+
+  </aside> -->
 
 
   <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/assets/vendor/chart.js/chart.umd.js"></script>
   <script src="/assets/vendor/echarts/echarts.min.js"></script>
   <script src="/assets/vendor/quill/quill.min.js"></script>
   <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>

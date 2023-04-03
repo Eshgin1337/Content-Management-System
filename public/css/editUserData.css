@@ -1,0 +1,87 @@
+body {
+    background-image: radial-gradient(circle at 50%, #D61355, #645CBB);
+    color: #E8E2E2;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    animation: move 5s linear infinite;
+}
+
+.container {
+    background: transparent;
+    padding: 40px;
+    border-radius: 10px;
+    animation: fadeIn 1s ease-in-out;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    margin: 100px auto;
+    width: 50%;
+    text-align: center;
+}
+
+.form-group {
+    margin: 20px 0;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+select {
+    padding: 10px;
+    font-size: 1.2em;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+select {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.btn {
+    background-color: #5B8FB9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.btn:hover {
+    background-color: #301E67;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 50px 50px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
