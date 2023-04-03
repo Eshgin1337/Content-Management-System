@@ -9,7 +9,7 @@ function deleteUser(userEmail) {
             },
         }).then(ifconfirm=>{
             if (ifconfirm){
-                fetch('http://mydata.az/deleteuser', {
+                fetch('https://mydata.az/deleteuser', {
                     method: 'POST',
                     credentials: "include",
                     headers: {
@@ -24,7 +24,7 @@ function deleteUser(userEmail) {
                             text: "Unauthorized!",  
                             icon: "error" 
                         }).then(function () {
-                            window.location = "http://mydata.az/login"
+                            window.location = "https://mydata.az/login"
                         });   
                     }
                     else if (response.status === 403) {
@@ -33,7 +33,7 @@ function deleteUser(userEmail) {
                             text: "Forbidden!",  
                             icon: "error" 
                         }).then(function () {
-                            window.location = "http://mydata.az/login"
+                            window.location = "https://mydata.az/login"
                         });   
                     }
                     else if (response.status === 401) {
@@ -43,7 +43,7 @@ function deleteUser(userEmail) {
                             icon: "error"
                         }).then(function () {
                             setTimeout(() => {
-                                window.location = "http://mydata.az/login";
+                                window.location = "https://mydata.az/login";
                             }, 1000);
                         });   
                     }
@@ -54,7 +54,7 @@ function deleteUser(userEmail) {
                             icon: "success"
                         }).then(function () {
                             setTimeout(() => {
-                                window.location = "http://mydata.az/systemusers";
+                                window.location = "https://mydata.az/systemusers";
                             }, 1000);
                         });  
                     }

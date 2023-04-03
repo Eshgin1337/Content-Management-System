@@ -29,7 +29,7 @@ form.addEventListener("submit", e => {
     email.parentElement.appendChild(emailError);
     return;
   }else {
-    fetch(`http://mydata.az/edit/${username}`, {
+    fetch(`https://mydata.az/edit/${username}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -33,7 +33,7 @@ app.use(session({
 }));
 
 
-mongoose.connect(process.env.CONNECTION_URL);
+mongoose.connect("mongodb://localhost:27017/blogDB");
 
 const postSchema = mongoose.Schema({
   title: String,
@@ -56,7 +56,12 @@ const Post = mongoose.model('Post', postSchema);
 const User = mongoose.model('User', userSchema);
 
 
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
+    res.render("mainPage");
+});
+
+
+app.get("/tutorials", function(req, res){
     if (req.session.isAuth) {
         if (req.cookies.current_user) {
             const userParams = req.cookies.current_user;
@@ -209,7 +214,7 @@ app.get('/login', function (req, res) {
     if (!req.session.isAuth) {
         res.render('login', {emailError: null, passwordError: null, curr_email: null});
     } else {
-        res.redirect("/")
+        res.redirect("/tutorials")
     }
 });
 
@@ -321,7 +326,7 @@ app.get("/editpost/:title/:subtitle", function (req, res) {
             if (userParams.role === "admin" || userParams.role === "editor") {
                 Post.find({}, function (err, posts) {
                     if (err) {
-                    console.log(err);
+                        throw err;
                     } else {
                         posts.forEach(elem => {
                             if(elem.title === title) {
@@ -382,25 +387,23 @@ app.post("/editpost/:title/:subtitle", function (req, res) {
                         if (previous_title !== title) {
                             result.title = title;
                         } 
-                        if (content !== previous_content) {
-                            result.contents.forEach(cnt => {
-                                if (subtitle === previous_subtitle) {
-                                    cnt.subtitleContent = content;
-                                }
-                            });
-                            result.contents = result.contents;
-                        } 
-                        if (subtitle !== previous_subtitle) {
+                        if (subtitle !== previous_subtitle && result.title === previous_title) {
                             result.contents.forEach(cnt => {
                                 if (cnt.subtitleName === previous_subtitle) {
                                     cnt.subtitleName = subtitle;
                                 }
                             });
-                            result.contents = result.contents;
                         }  
-                        result.markModified('contents')
+                        if (content !== previous_content) {
+                            result.contents.forEach(cnt => {
+                                if (previous_content === cnt.subtitleContent && cnt.subtitleName === previous_subtitle && result.title === previous_title) {
+                                    cnt.subtitleContent = content;
+                                }
+                            });
+                        } 
+                        result.markModified('contents');
                         result.save();
-                        res.redirect("/")
+                        res.redirect("/tutorials")
                     } else {
                         res.redirect("/logout")
                     }
@@ -454,7 +457,7 @@ app.post("/edit/:username", function (req, res) {
 app.get('/logout', function (req, res) {
     res.clearCookie("current_user");
     req.session.isAuth = false;
-    res.redirect("/");
+    res.redirect("/tutorials");
 });
 
 
@@ -495,7 +498,7 @@ app.post("/compose", function(req, res){
                                 subtitleContent: req.body.content
                             }]
                     result.save();
-                    res.redirect("/"); 
+                    res.redirect("/tutorials"); 
                 }
             } else {
                 Post.find({}, function (err, posts) {
@@ -534,7 +537,7 @@ app.post("/compose", function(req, res){
                     });
                     post.save(function (err) {
                         if (!err) {
-                        res.redirect("/");
+                        res.redirect("/tutorials");
                         }
                     });
                 } else {
@@ -560,6 +563,108 @@ app.post("/compose", function(req, res){
     
     
 });
+
+
+
+// app.post('/register', 
+//     body('name').not().isEmpty().trim().withMessage('Name field cannot be empty'),
+//     body('surname').not().isEmpty().trim().withMessage('Surname field cannot be empty'),
+//     body('location').not().isEmpty().trim().withMessage('Location field cannot be empty'),
+//     body('email').isEmail().withMessage('This is not a valid email format').normalizeEmail(),
+//     body('pass').isLength({min: 5}).withMessage('Password length should be longer')
+//         .matches('[A-Z]').withMessage('Password should contain uppercase letters')
+//         .matches('[0-9]').withMessage('Password should contain a number')
+//     , async function (req, res) {
+//         const errors = validationResult(req);
+//         const {name, surname, location, email, pass, confirm_pass} = req.body;
+//         const current_params = [name, surname, location, email];
+//         if (errors.isEmpty()) {
+//             let nameError = null;
+//             let surnameError = null;
+//             let locationError = null;
+//             let emailError = null;
+//             let passwordErrors = [];
+//             User.findOne({email: email}, async function (err, result) {
+//                 if (result) {
+//                     emailError = "This user has already registered";
+//                     res.render('register', 
+//                         {
+//                             nameError: null, 
+//                             surnameError: null, 
+//                             locationError: null, 
+//                             emailError: emailError, 
+//                             passwordErrors: null,
+//                             confirm_pass_error: null,
+//                             current_params: current_params
+//                         }
+//                     );
+//                 } else if (pass !== confirm_pass){
+//                     res.render('register', 
+//                         {
+//                             nameError: null, 
+//                             surnameError: null, 
+//                             locationError: null, 
+//                             emailError: null, 
+//                             passwordErrors: null,
+//                             confirm_pass_error: "Confirmation password does not match",
+//                             current_params: current_params
+//                         }
+//                     );
+//                 } else {
+//                     const passwordHash = await bcrypt.hash(pass, 12);
+//                     const newUser = new User({
+//                         name: name,
+//                         surname: surname, 
+//                         location: location,
+//                         email: email,
+//                         password: passwordHash,
+//                         isSeller: false
+//                     });
+//                     await newUser.save();
+//                     res.redirect("/login")
+//                 }
+//             })
+//         } else {
+//             let nameError = null;
+//             let surnameError = null;
+//             let locationError = null;
+//             let emailError = null;
+//             let passwordErrors = [];
+//             const errorArray = errors.array();
+//             console.log(errorArray);
+//             errorArray.forEach(elem => {
+//                 if (elem.param === 'name') {
+//                     nameError = elem.msg;
+//                 }
+//                 if (elem.param === 'surname') {
+//                     surnameError = elem.msg;
+//                 }
+//                 if (elem.param === 'location') {
+//                     locationError = elem.msg;
+//                 }
+//                 if (elem.param === 'email') {
+//                     emailError = elem.msg;
+//                 }
+//                 if (elem.param === 'pass') {
+//                     if (passwordErrors.length < 3) {
+//                         passwordErrors.push(elem.msg);
+//                     }
+//                 }
+//             });
+//             res.render('register', 
+//                 {
+//                     nameError: nameError, 
+//                     surnameError: surnameError, 
+//                     locationError: locationError, 
+//                     emailError: emailError, 
+//                     passwordErrors: passwordErrors,
+//                     confirm_pass_error: null,
+//                     current_params: current_params
+//                 }
+//             );
+//         }
+// });
+
 
 
 
@@ -698,5 +803,5 @@ app.get('*', function(req, res){
 });
 
 
-const port = process.env.PORT;
+const port = 3333;
 app.listen(port, () => {});

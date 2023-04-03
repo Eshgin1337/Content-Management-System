@@ -30,7 +30,7 @@ form.addEventListener("submit", e => {
     email.parentElement.appendChild(emailError);
     return;
   } else {
-    fetch(`http://mydata.az/edit/${username}`, {
+    fetch(`https://mydata.az/edit/${username}`, {
       method: "POST",
       headers: {
               'Accept': 'application/json',
@@ -49,7 +49,7 @@ form.addEventListener("submit", e => {
           }).then(ifConfirm => {
             if (ifConfirm) {
               setTimeout(() => {
-                  window.location = "http://mydata.az/systemusers";
+                  window.location = "https://mydata.az/systemusers";
               }, 1000);
             }
           });  
