@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/deletePageStyle.css">
+</head>
+<body>
+    
+    <h1>Delete Page</h1>
+    
+    <form action="/delete" method="POST">
+        <div class="delete-options">
+            <div class="delete-option">
+                <input type="radio" id="deleteCourseRadio" name="deleteOption" value="course" checked>
+                <label for="deleteCourseRadio" class="delete-option-label">Delete Course</label>
+                <select name="courseSelect" id="courseSelect">
+                    <option value="no-course" selected>No Course</option>
+                    <% courses.forEach(course=> { %>
+                        <option value="<%- course.courseName %>"><%- course.courseName %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="delete-option">
+                <input type="radio" id="deleteHeadingRadio" name="deleteOption" value="heading">
+                <label for="deleteHeadingRadio" class="delete-option-label">Delete Heading</label>
+                <select name="headingSelect" id="headingSelect" disabled>
+                    <option value="no-heading" selected>No Heading</option>
+                </select>
+            </div>
+            <div class="delete-option">
+                <input type="radio" id="deleteSubtitleRadio" name="deleteOption" value="subtitle">
+                <label for="deleteSubtitleRadio" class="delete-option-label">Delete Subtitle</label>
+                <select name="subtitleSelect" id="subtitleSelect" disabled>
+                    <option value="no-subtitle" selected>No Subtitle</option>
+                </select>
+            </div>
+        </div>
+        <button class="delete-button" type="submit">Delete</button>
+    </form>
+    <% var currCourses=courses %>
+    <script>
+        const courses = "<%- currCourses %>";
+        console.log(courses);
+        const courseSelect = document.getElementById("courseSelect");
+        const headingSelect = document.getElementById("headingSelect");
+        const subtitleSelect = document.getElementById("subtitleSelect");
+
+        courseSelect.addEventListener("change", () => {
+            const selectedCourse = courseSelect.value;
+            if (selectedCourse === "no-course") {
+                headingSelect.disabled = true;
+                subtitleSelect.disabled = true;
+            } else {
+                headingSelect.disabled = false;
+                subtitleSelect.disabled = true;
+                // Update heading options based on selected course
+                const selectedCourseData = courses.find(course => course.courseName === selectedCourse);
+                headingSelect.innerHTML = '<option value="no-heading" selected>No Heading</option>';
+                selectedCourseData.headings.forEach(heading => {
+                    const option = document.createElement("option");
+                    console.log(option);
+                    option.value = heading.headingName;
+                    option.text = heading.headingName;
+                    headingSelect.appendChild(option);
+                });
+            }
+        });
+
+        headingSelect.addEventListener("change", () => {
+            const selectedHeading = headingSelect.value;
+            if (selectedHeading === "no-heading") {
+                subtitleSelect.disabled = true;
+            } else {
+                subtitleSelect.disabled = false;
+                // Update subtitle options based on selected heading
+                const selectedCourse = courseSelect.value;
+                const selectedCourseData = courses.find(course => course.courseName === selectedCourse);
+                const selectedHeadingData = selectedCourseData.headings.find(heading => heading.headingName === selectedHeading);
+                subtitleSelect.innerHTML = '<option value="no-subtitle" selected>No Subtitle</option>';
+                selectedHeadingData.subtitles.forEach(subtitle => {
+                    const option = document.createElement("option");
+                    option.value = subtitle.subtitleName;
+                    option.text = subtitle.subtitleName;
+                    subtitleSelect.appendChild(option);
+                });
+            }
+        });
+    </script>
+
+</body>
+<!-- <script src="/js/deletePageBehavior.js"></script> -->
+</html>

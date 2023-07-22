@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Charts / Chart.js - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <section name="compose" id="compose" style="padding-top: 7%; padding-bottom: 7%; background-color: #bcbcbd;">
+        <div class="container-fluid col-lg-8 rounded" style="background-color: white; padding-bottom: 2%;">
+            <form class="container row g-3" action="/compose" method="post">
+
+                <!-- Radio button selection -->
+                <% if (error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Something went wrong!</strong>
+                        <%= error %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <% } %>
+                        <fieldset class="row mb-3" style="padding-top: 2%;">
+                            <legend class="col-form-label col-sm-2 pt-0">Title you add is: </legend>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="existence" id="new" value="new"
+                                        onclick="javascript:existenceCheck();">
+                                    <label class="form-check-label" for="new">
+                                        New
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="existence" id="existing"
+                                        value="existing" onclick="javascript:existenceCheck();">
+                                    <label class="form-check-label" for="existing">
+                                        Existing
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Type Title: -->
+
+                        <div class="mb-3" id="typetitle" style="display: none;">
+                            <label for="title" class="form-label">Create title:</label>
+                            <input type="text" class="form-control form-control" type="text" placeholder="Type title"
+                                aria-label=".form-control-lg example" name="title" id="title">
+                        </div>
+
+                        <!-- Select title -->
+
+                        <div class="mb-3" style="display: none;" id="selecttitle">
+                            <label for="selectTitle" class="form-label">Select title:</label>
+                            <select class="form-select" aria-label="Default select example" id="selectTitle"
+                                name="selectTitle">
+                                <% titles.forEach(element=> { %>
+                                    <option value="<%= element.title %>">
+                                        <%= element.title %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                        <hr>
+
+                        <!-- Create subtitle or add new subtitle -->
+
+                        <div class="mb-3">
+                            <label for="subtitle" class="form-label" id="subtitleLebel">Subtitle:</label>
+                            <input type="text" class="form-control form-control" type="text" placeholder="Type Subitle"
+                                name="subtitle" id="subtitle">
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Enter content:</label>
+                            <textarea class="tinymce-editor" name="content" id="content" style="height: 100px;">
+
+            </textarea>
+                        </div>
+
+                        <button class="btn btn-primary" type="submit" name="button">Publish</button>
+                        <a href="http://localhost:3000/courses">Back to tutorials</a>
+        </div>
+        </form>
+    </section>
+
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

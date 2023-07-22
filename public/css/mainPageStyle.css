@@ -1,0 +1,463 @@
+/* Loading page */
+.loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 4rem;
+    height: 4rem;
+    color: #007bff;
+}
+
+/* Set the background color for the entire page */
+body {
+    background-color: #E8E8E8;
+    padding-top: 3%;
+}
+
+/* Customize the font for the entire page */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+}
+
+/* Style the navbar */
+.navbar {
+    background-color: #454545;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: #007bff;
+}
+
+.nav-link {
+    font-size: 18px;
+    font-weight: 400;
+    color: #6c757d;
+}
+
+/* Style the hero section */
+
+#home {
+    background-color: #E8E8E8;
+}
+
+/* Courses section */
+
+/* add padding to courses section */
+main {
+    padding-top: 5px;
+    margin-bottom: 54px;
+    height: max-content;
+}
+
+/* adjust padding for smaller screens */
+@media only screen and (max-width: 768px) {
+    main {
+        padding-top: 130px;
+    }
+}
+
+.hero-section {
+    background-color: #3A98B9;
+    border-radius: 20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+    padding: 50px;
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+.hero-section h1 {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+.hero-section p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.hero-section img {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 50px 0;
+    }
+}
+
+
+/* About us */
+
+#about {
+    background-color: #F4F4F2;
+    padding: 80px 0;
+}
+
+
+
+/* Our team */
+#team {
+    background-color: #E8E8E8;
+}
+
+.employee-card {
+    width: 300px;
+    height: 400px;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.5s ease-out;
+}
+
+.employee-card:hover {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.employee-card .profile-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.employee-card .profile-name {
+    font-size: 24px;
+    margin: 20px 0 10px 0;
+}
+
+.employee-card .profile-position {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #999;
+}
+
+.employee-card .profile-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 20px 20px 0 20px;
+    text-align: justify;
+}
+
+.employee-card.animated {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.employee-card.animated:nth-child(1) {
+    transition-delay: 0.2s;
+}
+
+.employee-card.animated:nth-child(2) {
+    transition-delay: 0.4s;
+}
+
+@media (max-width: 768px) {
+    .member {
+        margin-bottom: 20px;
+    }
+}
+
+
+/* Style the feature section */
+.feature-section {
+    background-color: #f7f7f7;
+    padding: 70px 0;
+}
+
+.feature-box {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box i {
+    font-size: 50px;
+    color: #4d4d4d;
+    margin-bottom: 10px;
+}
+
+.feature-box h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #4d4d4d;
+}
+
+.feature-box p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666666;
+    margin-bottom: 0;
+}
+
+
+nav ul li a.active {
+    color: red;
+    font-weight: bold;
+}
+
+.section {
+    background-color: #f9f9f9;
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-text {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .feature-box {
+        margin-bottom: 30px;
+    }
+}
+
+
+/* Services page */
+
+#services {
+    background-color: #F4F4F2;
+    padding: 70px 0;
+}
+
+#services .section-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#services .card {
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    padding: 30px 20px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+#services .card:hover {
+    transform: translateY(-10px);
+}
+
+#services .card i {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+#services .card h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#services .card p {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+/* Good looking contact us page */
+
+.team-container {
+    margin-top: 50px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+#contact {
+    background-image: url("/images/contact-bg.jpg");
+    border-radius: 10px;
+    margin: 0 auto;
+    height: 860px;
+}
+
+#contact h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#contact form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+#contact form label {
+    font-weight: bold;
+}
+
+#contact form input,
+#contact form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+#contact form textarea {
+    resize: none;
+}
+
+#contact form button {
+    display: block;
+    margin: 0 auto;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    #contact form {
+        max-width: 90%;
+    }
+}
+
+
+/* add greeting to courses section */
+h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-top: 2rem;
+    color: #555;
+}
+
+
+/* Style for the row */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Style for the course container */
+.single-course {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* Style for the course image */
+.course-img {
+    height: 200px;
+    overflow: hidden;
+}
+
+/* Style for the course image */
+.course-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Style for the course title */
+.course-caption h4 {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+/* Style for the course rating */
+.course-ratting {
+    color: #feca57;
+    font-size: 16px;
+}
+
+/* Style for the course reviews */
+.course-cap-mid ul {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+    padding-left: 0;
+    list-style: none;
+}
+
+/* Style for the course stats */
+.course-cap-bottom ul {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+    padding-left: 0;
+    list-style: none;
+}
+
+/* Style for the course stats icons */
+.course-cap-bottom ul li i {
+    margin-right: 5px;
+}
+
+/* Style for the course price */
+.course-cap-bottom span {
+    font-size: 20px;
+    font-weight: 700;
+    color: #feca57;
+}
+
+
+/* Footer */
+.footer-section {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: #fff;
+}
+
+.footer-section.dark-bg {
+    background-color: #333;
+    color: #fff;
+}
+
+.footer-section.dark-bg a {
+    color: #fff;
+}
+
+.custom-padding {
+    padding-top: 50px;
+    /* adjust value to your liking */
+}

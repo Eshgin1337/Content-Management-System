@@ -27,7 +27,6 @@
     <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
     <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
 
@@ -39,137 +38,113 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="https://mpng.subpng.com/20190216/k/kisspng-carnegie-mellon-university-advanced-database-syste-project-2-concurrent-index-cmu-15-721-adva-5c68a8fdf135a9.916348971550362877988.jpg"
-                    alt="Logo" style="width: 40px;" class="rounded-pill">
+                    alt="Logo" style="width: 40px;" class="rounded-pill nav-link bi bi-list toggle-sidebar-btn">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link bi bi-list toggle-sidebar-btn" href="#">Menu</a>
+                    <li class="nav-item" style="white-space: nowrap;">
+                        <a class="nav-link" href="/about">About us</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/about">About us</a>
+                    <li class="nav-item" style="white-space: nowrap;">
+                        <a class="nav-link" href="/">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/compose">Add tutorial</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Tutorials
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li> <a class="dropdown-item" href="#"> Mysql </a></li>
-                            <li> <a class="dropdown-item" href="#"> Mongodb </a></li>
-                            <li> <a class="dropdown-item" href="#"> PostgreSQL </a></li>
-                        </ul>
-                    </li>
+                    <% if (role==="admin" ) { %>
+                        <li class="nav-item" style="white-space: nowrap;">
+                            <a class="nav-link" href="/compose">Add tutorial</a>
+                        </li>
+                        <li class="nav-item" style="white-space: nowrap;">
+                            <a class="nav-link" href="/systemusers">Users</a>
+                        </li>
+                    <% } else if (role==="editor") {%>
+                        <li class="nav-item" style="white-space: nowrap;">
+                            <a class="nav-link" href="/compose">Add tutorial</a>
+                        </li>
+                    <% } %>
                 </ul>
-                <form class="d-flex">
-                    <input type="search" placeholder="Search" class="form-control me-2" aria-label="search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
 
     <aside id="sidebar" class="sidebar">
-
+    
         <ul class="sidebar-nav" id="sidebar-nav">
-
+    
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/">
+                <a class="nav-link collapsed" href="/courses">
                     <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
+                    <span>Tutorials Page</span>
                 </a>
             </li><!-- End Dashboard Nav -->
             <% posts.forEach(function(post){ %>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#<%= post.title %>-nav" data-bs-toggle="collapse"
-                        href="#">
-                        <i class="bi bi-book-fill"></i>
-                        <span>
-                            <%= post.title %>
-                        </span><i class="bi bi-chevron-down ms-auto"></i>
-                    </a>
-                    <ul id="<%= post.title %>-nav" class="nav-content collapse "
-                        data-bs-parent="#<%= post.title %>-nav">
-                        <li>
-                            <a href="/posts/<%= post.id %> ">
-                                <i class="bi bi-circle"></i><span>
-                                    <%= post.subtitle %>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <% }) %>
-
-
-
-                    <li class="nav-heading">Pages</li>
-
+                <% if (post.title === requestedPost.title) { %>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="users-profile.html">
-                            <i class="bi bi-person"></i>
-                            <span>Profile</span>
+                        <a class="nav-link" data-bs-target="#a<%- post.id %>-nav" data-bs-toggle="collapse" href="#" id="a<%- post.id %> ">
+                            <i class="bi bi-book-fill"></i><span>
+                                <%= post.title %>
+                            </span><i class="bi bi-chevron-down ms-auto"></i>
                         </a>
-                    </li><!-- End Profile Page Nav -->
-
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>F.A.Q</span>
-                        </a>
-                    </li><!-- End F.A.Q Page Nav -->
-
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="pages-contact.html">
-                            <i class="bi bi-envelope"></i>
-                            <span>Contact</span>
-                        </a>
-                    </li><!-- End Contact Page Nav -->
-
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="pages-register.html">
-                            <i class="bi bi-card-list"></i>
-                            <span>Register</span>
-                        </a>
-                    </li><!-- End Register Page Nav -->
-
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="pages-login.html">
-                            <i class="bi bi-box-arrow-in-right"></i>
-                            <span>Login</span>
-                        </a>
-                    </li><!-- End Login Page Nav -->
-
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="pages-error-404.html">
-                            <i class="bi bi-dash-circle"></i>
-                            <span>Error 404</span>
-                        </a>
-                    </li><!-- End Error 404 Page Nav -->
-
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="pages-blank.html">
-                            <i class="bi bi-file-earmark"></i>
-                            <span>Blank</span>
-                        </a>
+                        <ul id="a<%- post.id %>-nav" class="nav-content collapse show" data-bs-parent="#<%= post.title %>-nav">
+                            <!--  data-bs-parent="#<%= post.title %>-nav" also possible-->
+                            <% post.contents.forEach(element=> { %>
+                                <li>
+                                    <a href="/posts/<%= post.title %>/<%= element.subtitleName %>">
+                                        <i class="bi bi-circle"></i>
+                                        <span id="<%= element.subtitleName %>">
+                                            <%= element.subtitleName %>
+                                        </span>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
                     </li>
-
+                    <% post.contents.forEach(element => { %>
+                        <% if (element.subtitleName === renderSubtitle) { %>
+                            <script>
+                                var titleName = "<%= post.title %>";
+                                var subtitle = "<%= renderSubtitle %>";
+                                document.getElementById(subtitle).style.color = "#4154f1";
+                            </script>
+                        <% } %>
+                    <% }) %>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#a<%- post.id %>-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-book-fill"></i><span>
+                                <%= post.title %>
+                            </span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="a<%- post.id %>-nav" class="nav-content collapse" data-bs-parent="#a<%- post.id %>-nav">
+                            <!--  data-bs-parent="#<%= post.title %>-nav" also possible-->
+                            <% post.contents.forEach(element=> { %>
+                                <li>
+                                    <a href="/posts/<%= post.title %>/<%= element.subtitleName %>">
+                                        <i class="bi bi-circle"></i><span>
+                                            <%= element.subtitleName %>
+                                        </span>
+                                    </a>
+                                </li>
+                                <% }); %>
+                        </ul>
+                    </li>
+                <% } %>
+                
+            <% }) %>
+    
+            <% if (role) { %>
+                <li class="nav-heading mt-5">Pages</li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="http://localhost:3000/logout">
+                        <i class="bi bi-arrow-right-square"></i>
+                        <span>Log out</span>
+                    </a>
+                </li>
+            <% } %>
         </ul>
-
+    
     </aside>
 
 
@@ -177,31 +152,40 @@
     
         <section class="section">
             <div class="row">
-                <h1>
-                    <%=requestedPost.title%>
-                </h1>
-                <h3>
-                    <%=requestedPost.subtitle%>
-                </h3>
-                <div class="container" id="container">
-                    <%-requestedPost.content%>
-                </div>
+                <% requestedPost.contents.forEach(element => { %>
+                    <% if (element.subtitleName === renderSubtitle) { %>
+                        <% if (role==="admin" || role==="editor") { %>
+                            <a class="cta" href="/editpost/<%= requestedPost.title %>/<%=element.subtitleName%>">
+                                <span class="hover-underline-animation"> Edit here </span>
+                                <svg viewBox="0 0 46 16" height="10" width="30" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal">
+                                    <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+                                        data-name="Path 10" id="Path_10"></path>
+                                </svg>
+                            </a>
+                        <% } %>
+                        
+                        <h1>
+                            <%=requestedPost.title%>
+                        </h1>
+                        <h3>
+                            <%=element.subtitleName%>
+                        </h3>
+                        <div class="container" id="container">
+                            <%-element.subtitleContent%>
+                        </div>
+                    <% } %>
+                <% }) %>
+                
                 </p>
             </div>
         </section>
-    
+
     </main>
 
-
-    <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/vendor/chart.js/chart.umd.js"></script>
-    <script src="/assets/vendor/echarts/echarts.min.js"></script>
-    <script src="/assets/vendor/quill/quill.min.js"></script>
     <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="/assets/vendor/php-email-form/validate.js"></script>
-
     <!-- Template Main JS File -->
     <script src="/assets/js/main.js"></script>
 
