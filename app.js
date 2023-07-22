@@ -33,11 +33,51 @@ app.use(session({
 }));
 
 
+// Multer code to store pictures
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Set the destination folder for uploaded files
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname); // Set the filename to make it unique
+  }
+});
+
+const upload = multer({ storage: storage });
+
+
+// Set up connection to database
 mongoose.connect("mongodb://localhost:27017/blogDB");
 
-const postSchema = mongoose.Schema({
-  title: String,
-  contents: Array,
+
+// Create Schemas
+const courseSchema = mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  contents: [
+    {heading: {
+        headingName: {
+            type: String,
+            required: true
+        },
+        headingContents: [{
+            subtitle: {
+                type: String,
+                required: true
+            },
+            content: {
+                type: String,
+                required: true
+            }
+        }]
+    }
+}],
+  profilePicture: {
+    type: String
+  }
 });
 
 
@@ -52,7 +92,7 @@ const userSchema = mongoose.Schema({
 });
 
 
-const Post = mongoose.model('Post', postSchema);
+const Course = mongoose.model('Course', courseSchema);
 const User = mongoose.model('User', userSchema);
 
 
@@ -61,22 +101,22 @@ app.get("/", function (req, res) {
 });
 
 
-app.get("/tutorials", function(req, res){
+app.get("/courses", function(req, res){
     if (req.session.isAuth) {
         if (req.cookies.current_user) {
             const userParams = req.cookies.current_user;
-            Post.find({}, function (err, posts) {
+            Course.find({}, function (err, posts) {
                 if (err) {
                 console.log(err);
                 } else {
                     if (userParams.role === "admin") {
-                        res.render("home", {
+                        res.render("courses", {
                             startingContent: homeStartingContent,
                             posts: posts,
                             role: "admin"
                         });
                     } else if(userParams.role === "editor" || userParams.role === "user") {
-                        res.render("home", {
+                        res.render("courses", {
                             startingContent: homeStartingContent,
                             posts: posts,
                             role: "editor"
@@ -87,11 +127,11 @@ app.get("/tutorials", function(req, res){
             }); 
         } else {
             req.session.isAuth = false;
-            Post.find({}, function (err, posts) {
+            Course.find({}, function (err, posts) {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.render("home", {
+                    res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
                         role: ""
@@ -100,11 +140,11 @@ app.get("/tutorials", function(req, res){
             });
         }
     } else {
-            Post.find({}, function (err, posts) {
+            Course.find({}, function (err, posts) {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.render("home", {
+                    res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
                         role: ""
@@ -112,6 +152,11 @@ app.get("/tutorials", function(req, res){
                 }
             });
     } 
+});
+
+
+app.get("/createCourse", function (req, res) {
+    res.render("createCourse");
 });
 
 
@@ -181,40 +226,60 @@ app.get("/registeruser", async function (req, res) {
 });
 
 
-app.get("/compose", function(req, res){
-    if (req.session.isAuth) {
-        if (req.cookies.current_user) {
-            const userParams = req.cookies.current_user;
-            if (userParams.role === "admin" || userParams.role === "editor") {
-                Post.find({}, function (err, posts) {
-                    const records = posts
-                    const fields = ['title']
-                    const titles = records.map(i=>Object.fromEntries(fields.map(f=>[f, i[f]])));
-                    res.render("compose", {titles: titles, error: null, role: userParams.role});
-                }) 
-            } else {
-                res.render('error_page', 
-                    {
-                        errorCode: "403",
-                        errorTitle: "Forbidden",
-                        errorMsg: "Only admins and editors can access this page."
-                    }
-                );
-            } 
-        } else {
-            req.session.isAuth = false;
-            res.redirect('/login');
-        }
+app.get("/compose/:course", function(req, res) {
+  const courseName = req.params.course;
+  Course.findOne({ title: courseName }, function(err, course) {
+    if (err) {
+      // Handle the error
+      console.error(err);
+      return;
+    }
+
+    if (!course) {
+      // No course found
+      res.render("error_page", {
+        errorCode: "404",
+        errorTitle: "Not found",
+        errorMsg: "There is no course like this still"
+      });
+    } else if (course.contents.length === 0) {
+      // No headings exist
+      res.render("compose", { headings: null, error: null, course: courseName });
     } else {
-            res.redirect('/login');
-    }   
+      const headings = course.contents.map((content) => content.heading.headingName);
+      console.log(headings);
+      res.render("compose", { headings: headings, error: null, course: courseName });
+    }
+  });
 });
+
+
+// if (req.session.isAuth) {
+    //     if (req.cookies.current_user) {
+    //         const userParams = req.cookies.current_user;
+    //         if (userParams.role === "admin" || userParams.role === "editor") {
+//         } else {
+                // res.render('error_page', 
+                //     {
+                //         errorCode: "403",
+                //         errorTitle: "Forbidden",
+                //         errorMsg: "Only admins and editors can access this page."
+                //     }
+                // );
+    //         } 
+    //     } else {
+    //         req.session.isAuth = false;
+    //         res.redirect('/login');
+    //     }
+    // } else {
+    //         res.redirect('/login');
+    // }   
 
 app.get('/login', function (req, res) {
     if (!req.session.isAuth) {
         res.render('login', {emailError: null, passwordError: null, curr_email: null});
     } else {
-        res.redirect("/tutorials")
+        res.redirect("/courses")
     }
 });
 
@@ -224,23 +289,23 @@ app.get('/dashboard', function (req, res) {
 })
 
 
-app.get("/posts/:postTitle/:subtitle", function(req, res){
-    const requestedPostTitle = req.params.postTitle;
-    const subtitle = req.params.subtitle;
+app.get("courses/:heading/:title", function(req, res){
+    const requestedCourseTitle = req.params.heading;
+    const subtitle = req.params.title;
     let curr_post = null;
     let subtitleMatch = false;
-    Post.find({}, function (err, posts) {
+    Course.find({}, function (err, posts) {
         if (err) {
         console.log(err);
         } else {
             posts.forEach(elem => {
-                if(elem.title === requestedPostTitle) {
+                if(elem.title === requestedCourseTitle) {
                         curr_post = elem;
                 } 
             });
             if (curr_post) {
                 curr_post.contents.forEach(element => {
-                if (element.subtitleName === subtitle) {
+                if (element.titleName === subtitle) {
                     subtitleMatch = true;
                 }
             });
@@ -250,7 +315,7 @@ app.get("/posts/:postTitle/:subtitle", function(req, res){
                     res.render("post", {
                         startingContent: homeStartingContent,
                         posts: posts,
-                        requestedPost: curr_post,
+                        requestedCourse: curr_post,
                         renderSubtitle: subtitle,
                         role: req.cookies.current_user.role
                     });
@@ -258,7 +323,7 @@ app.get("/posts/:postTitle/:subtitle", function(req, res){
                     res.render("post", {
                         startingContent: homeStartingContent,
                         posts: posts,
-                        requestedPost: curr_post,
+                        requestedCourse: curr_post,
                         renderSubtitle: subtitle,
                         role: ""
                     });
@@ -324,7 +389,7 @@ app.get("/editpost/:title/:subtitle", function (req, res) {
         if (req.cookies.current_user) {
             const userParams = req.cookies.current_user;
             if (userParams.role === "admin" || userParams.role === "editor") {
-                Post.find({}, function (err, posts) {
+                Course.find({}, function (err, posts) {
                     if (err) {
                         throw err;
                     } else {
@@ -335,14 +400,14 @@ app.get("/editpost/:title/:subtitle", function (req, res) {
                         });
                         if (curr_post) {
                             curr_post.contents.forEach(element => {
-                                if (element.subtitleName === subtitle) {
+                                if (element.titleName === subtitle) {
                                     subtitleMatch = true;
                                     current_content = element.subtitleContent;
                                 }
                             });
                         }
                         if (curr_post && subtitleMatch) {
-                            res.render("editPostPage", {
+                            res.render("editCoursePage", {
                                 title: title,
                                 subtitle: subtitle,
                                 content: current_content
@@ -370,6 +435,34 @@ app.get("/editpost/:title/:subtitle", function (req, res) {
 });
 
 
+// Delete page
+app.get("/delete", function(req, res) {
+  // Retrieve the courses data from the database
+  Course.find({}, function(err, courses) {
+    if (err) {
+      // Handle the error
+      console.error(err);
+      return;
+    }
+
+    // Transform the courses data into the desired format
+    const formattedCourses = courses.map(course => {
+      const formattedHeadings = course.contents.map(content => {
+        const formattedSubtitles = content.heading.headingContents.map(subtitle => {
+          return { subtitleName: subtitle.subtitle };
+        });
+        return { headingName: content.heading.headingName, subtitles: formattedSubtitles };
+      });
+      return { courseName: course.title, headings: formattedHeadings };
+    });
+
+    // Render the deletePage.ejs file and pass the formattedCourses parameter
+    res.render("deletePage", { courses: formattedCourses });
+  });
+});
+
+
+
 app.post("/editpost/:title/:subtitle", function (req, res) {
     const title = req.body.inputTitle; 
     const subtitle = req.body.inputSubtitle; //
@@ -381,7 +474,7 @@ app.post("/editpost/:title/:subtitle", function (req, res) {
         if (req.cookies.current_user) {
             const userParams = req.cookies.current_user;
             if (userParams.role === "admin" || userParams.role === "editor") {
-                Post.findOne({title: previous_title}, function (err, result) {
+                Course.findOne({title: previous_title}, function (err, result) {
                     if (err) throw err;
                     if (result) {
                         if (previous_title !== title) {
@@ -389,21 +482,21 @@ app.post("/editpost/:title/:subtitle", function (req, res) {
                         } 
                         if (subtitle !== previous_subtitle && result.title === previous_title) {
                             result.contents.forEach(cnt => {
-                                if (cnt.subtitleName === previous_subtitle) {
-                                    cnt.subtitleName = subtitle;
+                                if (cnt.titleName === previous_subtitle) {
+                                    cnt.titleName = subtitle;
                                 }
                             });
                         }  
                         if (content !== previous_content) {
                             result.contents.forEach(cnt => {
-                                if (previous_content === cnt.subtitleContent && cnt.subtitleName === previous_subtitle && result.title === previous_title) {
+                                if (previous_content === cnt.subtitleContent && cnt.titleName === previous_subtitle && result.title === previous_title) {
                                     cnt.subtitleContent = content;
                                 }
                             });
                         } 
                         result.markModified('contents');
                         result.save();
-                        res.redirect("/tutorials")
+                        res.redirect("/courses")
                     } else {
                         res.redirect("/logout")
                     }
@@ -457,215 +550,116 @@ app.post("/edit/:username", function (req, res) {
 app.get('/logout', function (req, res) {
     res.clearCookie("current_user");
     req.session.isAuth = false;
-    res.redirect("/tutorials");
+    res.redirect("/courses");
 });
 
 
 
 app.post("/compose", function(req, res){
-    if (req.body.existence === 'new' && req.body.title ==="" || req.body.subtitle === "" || req.body.content === "") {
-        Post.find({}, function (err, posts) {
-            const records = posts
-            const fields = ['title']
-            const titles = records.map(i=>Object.fromEntries(fields.map(f=>[f, i[f]])));
-            res.render("compose", {titles: titles, error: "Please do not leave the any field empty!"}); }); 
-    } 
-        
-    else if (req.body.selectedTitle !==null && req.body.existence === "existing"){
-        Post.findOne({title: req.body.selectTitle}, function (err, result) {
-            if (err) throw err;
-            if (result) {
-                var subtitleExist = "";
-                result.contents.forEach(content => {
-                    if (content.subtitleName === req.body.subtitle) {
-                        subtitleExist = "Yes";
-                    }
-                })
-                if (subtitleExist) {
-                    Post.find({}, function (err, posts) {
-                        const records = posts
-                        const fields = ['title']
-                        const titles = records.map(i=>Object.fromEntries(fields.map(f=>[f, i[f]])));
-                        res.render("compose", 
-                            {
-                                titles: titles, 
-                                error: "This subtitle already exists. If you want to add something to this subtitle. Please edit it."
-                            });
-                    });
-                } else {
-                    result.contents = [...result.contents, {
-                                subtitleName: req.body.subtitle,
-                                subtitleContent: req.body.content
-                            }]
-                    result.save();
-                    res.redirect("/tutorials"); 
-                }
-            } else {
-                Post.find({}, function (err, posts) {
-                    const records = posts
-                    const fields = ['title']
-                    const titles = records.map(i=>Object.fromEntries(fields.map(f=>[f, i[f]])));
-                    res.render("compose", 
-                        {
-                            titles: titles, 
-                            error: "This title does not exist. Please choose the 'new' option and continue."
-                        });
-                });
-                
-            }})
-    } 
-    
-    else if(!req.body.existence) {
-        Post.find({}, function (err, posts) {
-            const records = posts
-            const fields = ['title']
-            const titles = records.map(i=>Object.fromEntries(fields.map(f=>[f, i[f]])));
-            res.render("compose", {titles: titles, error: "If you are adding new title, clich 'new', otherwise 'existence'"});
-        });
-    } 
-    
-    else if (req.body.title && req.body.existence === "new") {
-            Post.findOne({title: req.body.title}, function (err, result) {
-                if (err) throw err;
-                if (!result) {
-                    const post = new Post({
-                    title: req.body.title,
-                    contents: [{
-                                    subtitleName: req.body.subtitle,
-                                    subtitleContent: req.body.content
-                                }]
-                    });
-                    post.save(function (err) {
-                        if (!err) {
-                        res.redirect("/tutorials");
-                        }
-                    });
-                } else {
-                    Post.find({}, function (err, posts) {
-                    const records = posts
-                    const fields = ['title']
-                    const titles = records.map(i=>Object.fromEntries(fields.map(f=>[f, i[f]])));
-                    res.render("compose", {titles: titles, error: "This title already exists. Please choose the 'existing' option and continue"});
-                });
-                }
-            });
-            
-    } 
-    
-    else {
-        Post.find({}, function (err, posts) {
-            const records = posts
-            const fields = ['title']
-            const titles = records.map(i=>Object.fromEntries(fields.map(f=>[f, i[f]])));
-            res.render("compose", {titles: titles, error: "Do not troll me!"});
-        });
+    console.log(req.body);
+    const existenceStatus = req.body.existence || "new";
+    var currHeading = "";
+    if (!req.body.heading && !req.body.selectHeading) {
+        currHeading = "";
+        console.log("In if");
+    } else if (!req.body.heading) {
+        console.log("In else if");
+        currHeading = req.body.selectHeading;
+    } else {
+        console.log("In else");
+        currHeading = req.body.heading
     }
-    
-    
+    const currContent = req.body.content;
+    const courseName = req.body.course;
+    const subtitle = req.body.subtitle;
+    console.log(existenceStatus, currHeading, currContent, courseName, subtitle);
+    if ((currHeading==="" || subtitle === "" || currContent === "")) {
+        Course.findOne({title: courseName}, function (err, course) {
+            const records = course;
+            console.log(course);
+            const fields = ['title']
+            if (records.contents.length === 0) {
+                res.render("compose", {headings: null, error: "Please do not leave the any field empty!", course: courseName}); 
+            } else {
+                const headings = course.contents.map(content => content.heading);
+                console.log(headings);
+                res.render("compose", {headings: headings, error: "Please do not leave the any field empty!", course: courseName});
+            }
+        }); 
+    } 
+
+    else {
+        Course.findOne({ title: courseName }, function(err, course) {
+            if (err) {
+                // Handle the error
+                console.error(err);
+                return;
+            }
+
+            if (!course) {
+                // No course found
+                res.render("error_page", {
+                errorCode: "404",
+                errorTitle: "Not found",
+                errorMsg: "This course does not exist."
+                });
+                return;
+            }
+
+            const existingHeading = course.contents.find(
+                (content) => content.heading.headingName === currHeading
+            );
+
+            if (existingHeading) {
+                const existingSubtitle = existingHeading.heading.headingContents.find(
+                    (currSubtitle) => currSubtitle.subtitle === subtitle
+                );
+
+            if (existingSubtitle) {
+                // Subtitle already exists
+                res.render("compose", {
+                    headings: null,
+                    error: "This subtitle already exists!",
+                    course: courseName
+                });
+                return;
+            }
+
+            // Subtitle doesn't exist, extend headingContents array
+            existingHeading.heading.headingContents.push({
+                subtitle: subtitle,
+                content: currContent
+            });
+        } else {
+            // Heading doesn't exist, extend contents array
+            course.contents.push({
+            heading: {
+                headingName: currHeading,
+                headingContents: [
+                {
+                    subtitle: subtitle,
+                    content: currContent
+                }
+                ]
+            }
+            });
+        }
+
+        // Save the updated course document
+        course.save(function(err) {
+            if (err) {
+            // Handle the error
+            console.error(err);
+            return;
+            }
+
+            // Redirect or render success page
+            res.redirect("/compose/Python");
+        });
+        });
+
+    }
 });
-
-
-
-// app.post('/register', 
-//     body('name').not().isEmpty().trim().withMessage('Name field cannot be empty'),
-//     body('surname').not().isEmpty().trim().withMessage('Surname field cannot be empty'),
-//     body('location').not().isEmpty().trim().withMessage('Location field cannot be empty'),
-//     body('email').isEmail().withMessage('This is not a valid email format').normalizeEmail(),
-//     body('pass').isLength({min: 5}).withMessage('Password length should be longer')
-//         .matches('[A-Z]').withMessage('Password should contain uppercase letters')
-//         .matches('[0-9]').withMessage('Password should contain a number')
-//     , async function (req, res) {
-//         const errors = validationResult(req);
-//         const {name, surname, location, email, pass, confirm_pass} = req.body;
-//         const current_params = [name, surname, location, email];
-//         if (errors.isEmpty()) {
-//             let nameError = null;
-//             let surnameError = null;
-//             let locationError = null;
-//             let emailError = null;
-//             let passwordErrors = [];
-//             User.findOne({email: email}, async function (err, result) {
-//                 if (result) {
-//                     emailError = "This user has already registered";
-//                     res.render('register', 
-//                         {
-//                             nameError: null, 
-//                             surnameError: null, 
-//                             locationError: null, 
-//                             emailError: emailError, 
-//                             passwordErrors: null,
-//                             confirm_pass_error: null,
-//                             current_params: current_params
-//                         }
-//                     );
-//                 } else if (pass !== confirm_pass){
-//                     res.render('register', 
-//                         {
-//                             nameError: null, 
-//                             surnameError: null, 
-//                             locationError: null, 
-//                             emailError: null, 
-//                             passwordErrors: null,
-//                             confirm_pass_error: "Confirmation password does not match",
-//                             current_params: current_params
-//                         }
-//                     );
-//                 } else {
-//                     const passwordHash = await bcrypt.hash(pass, 12);
-//                     const newUser = new User({
-//                         name: name,
-//                         surname: surname, 
-//                         location: location,
-//                         email: email,
-//                         password: passwordHash,
-//                         isSeller: false
-//                     });
-//                     await newUser.save();
-//                     res.redirect("/login")
-//                 }
-//             })
-//         } else {
-//             let nameError = null;
-//             let surnameError = null;
-//             let locationError = null;
-//             let emailError = null;
-//             let passwordErrors = [];
-//             const errorArray = errors.array();
-//             console.log(errorArray);
-//             errorArray.forEach(elem => {
-//                 if (elem.param === 'name') {
-//                     nameError = elem.msg;
-//                 }
-//                 if (elem.param === 'surname') {
-//                     surnameError = elem.msg;
-//                 }
-//                 if (elem.param === 'location') {
-//                     locationError = elem.msg;
-//                 }
-//                 if (elem.param === 'email') {
-//                     emailError = elem.msg;
-//                 }
-//                 if (elem.param === 'pass') {
-//                     if (passwordErrors.length < 3) {
-//                         passwordErrors.push(elem.msg);
-//                     }
-//                 }
-//             });
-//             res.render('register', 
-//                 {
-//                     nameError: nameError, 
-//                     surnameError: surnameError, 
-//                     locationError: locationError, 
-//                     emailError: emailError, 
-//                     passwordErrors: passwordErrors,
-//                     confirm_pass_error: null,
-//                     current_params: current_params
-//                 }
-//             );
-//         }
-// });
-
-
 
 
 app.post('/login', 
@@ -760,7 +754,7 @@ app.post("/registeruser", async function (req, res) {
                             passwordHash: passwordHash
                         });
                         user.save();
-                        res.redirect("https://mydata.az/systemusers");
+                        res.redirect("http://localhost:3000/systemusers");
                     } else {
                         res.render('registeruser', 
                         {
@@ -794,6 +788,28 @@ app.post("/registeruser", async function (req, res) {
 });
 
 
+app.post('/createCourse', upload.single('profilePicture'), (req, res) => {
+  // Access the uploaded file using req.file
+  if (req.file) {
+    // Handle the file, e.g., store it in the appropriate location or perform further processing
+    console.log('Uploaded file:', req.file);
+  }
+
+  // Access other form fields using req.body
+  const { title } = req.body;
+
+  // Create a new course object and save it to the database
+  const newCourse = new Course({ title, profilePicture: req.file.filename });
+  newCourse.save()
+    .then(savedCourse => {
+      res.redirect('/courses');
+    })
+    .catch(error => {
+      console.error('Failed to create the course:', error);
+      res.status(500).json({ error: 'Failed to create the course' });
+    });
+});
+
 app.get('*', function(req, res){
   res.render('error_page', {
                         errorCode: "404",
@@ -803,5 +819,5 @@ app.get('*', function(req, res){
 });
 
 
-const port = 3333;
+const port = 3000;
 app.listen(port, () => {});
