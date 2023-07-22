@@ -106,6 +106,7 @@ app.get("/courses", function(req, res){
         if (req.cookies.current_user) {
             const userParams = req.cookies.current_user;
             Course.find({}, function (err, posts) {
+                
                 if (err) {
                 console.log(err);
                 } else {
@@ -131,6 +132,7 @@ app.get("/courses", function(req, res){
                 if (err) {
                     console.log(err);
                 } else {
+                    console.log(posts);
                     res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
@@ -144,6 +146,9 @@ app.get("/courses", function(req, res){
                 if (err) {
                     console.log(err);
                 } else {
+                    posts.forEach(elem => {
+                        console.log(elem.contents);
+                    })
                     res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
