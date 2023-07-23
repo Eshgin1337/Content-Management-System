@@ -61,13 +61,11 @@
     </nav>
 
   <main id="main" class="main">
-    <% posts.contents.forEach(element=> { %>
-      <% if (element.subtitleName===renderSubtitle) { %>
-        <% if (role==="admin" || role==="editor" ) { %>
-  
-          <% } %>
-            <% } %>
-        <% }) %>
+    <% if (posts) { %>
+      <% posts.forEach(element=> { %>
+        <%= element.title %>
+      <% }) %>
+    <% } %>
   </main>
 
   <!-- Template Main JS File -->
