@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Data Blog Page</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end fixed-top mb-5">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://mpng.subpng.com/20190216/k/kisspng-carnegie-mellon-university-advanced-database-syste-project-2-concurrent-index-cmu-15-721-adva-5c68a8fdf135a9.916348971550362877988.jpg"
+                    alt="Logo" style="width: 40px;" class="rounded-pill nav-link bi bi-list toggle-sidebar-btn">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item" style="white-space: nowrap;">
+                    <a class="nav-link" href="/about">About us</a>
+                  </li>
+                  <% if (role==="admin" ) { %>
+                    <li class="nav-item" style="white-space: nowrap;">
+                      <a class="nav-link" href="/compose">Add tutorial</a>
+                    </li>
+                    <li class="nav-item" style="white-space: nowrap;">
+                      <a class="nav-link" href="/systemusers">Users</a>
+                    </li>
+                  <% } else if (role==="editor" ) {%>
+                    <li class="nav-item" style="white-space: nowrap;">
+                      <a class="nav-link" href="/compose">Add tutorial</a>
+                    </li>
+                  <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <main id="main" class="main">
+    <% if (posts) { %>
+      <% posts.forEach(element=> { %>
+        <div class="card" style="width: 18rem;">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/640px-Python-logo-notext.svg.png"
+            class="card-img-top" alt="..." style="width: 200px; height: 200px;">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= element.title %>
+            </h5>
+            <p class="card-text"><%- element.contents[0].heading.headingContents[0].content %></p>
+            <a href="#" class="btn btn-primary">Start learning <%= element.title %></a>
+          </div>
+        </div>
+        <% }) %>
+          <% } %>
+  </main>
+
+  <!-- Template Main JS File -->
+  <script src="/assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+
+</html>
