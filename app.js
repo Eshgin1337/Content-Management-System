@@ -96,12 +96,12 @@ const Course = mongoose.model('Course', courseSchema);
 const User = mongoose.model('User', userSchema);
 
 
-app.get("/", function (req, res) {
-    res.render("mainPage");
-});
+// app.get("/", function (req, res) {
+//     res.render("mainPage");
+// });
 
 
-app.get("/courses", function(req, res){
+app.get("/", function(req, res){
     if (req.session.isAuth) {
         if (req.cookies.current_user) {
             const userParams = req.cookies.current_user;
@@ -132,7 +132,6 @@ app.get("/courses", function(req, res){
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(posts);
                     res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
@@ -146,9 +145,7 @@ app.get("/courses", function(req, res){
                 if (err) {
                     console.log(err);
                 } else {
-                    posts.forEach(elem => {
-                        console.log(elem.contents);
-                    })
+                    console.log(typeof posts);
                     res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
@@ -294,57 +291,57 @@ app.get('/dashboard', function (req, res) {
 })
 
 
-app.get("courses/:heading/:title", function(req, res){
-    const requestedCourseTitle = req.params.heading;
-    const subtitle = req.params.title;
-    let curr_post = null;
-    let subtitleMatch = false;
-    Course.find({}, function (err, posts) {
-        if (err) {
-        console.log(err);
-        } else {
-            posts.forEach(elem => {
-                if(elem.title === requestedCourseTitle) {
-                        curr_post = elem;
-                } 
-            });
-            if (curr_post) {
-                curr_post.contents.forEach(element => {
-                if (element.titleName === subtitle) {
-                    subtitleMatch = true;
-                }
-            });
-            }
-            if (curr_post && subtitleMatch) {
-                if (req.cookies.current_user) {
-                    res.render("post", {
-                        startingContent: homeStartingContent,
-                        posts: posts,
-                        requestedCourse: curr_post,
-                        renderSubtitle: subtitle,
-                        role: req.cookies.current_user.role
-                    });
-                } else {
-                    res.render("post", {
-                        startingContent: homeStartingContent,
-                        posts: posts,
-                        requestedCourse: curr_post,
-                        renderSubtitle: subtitle,
-                        role: ""
-                    });
-                }
-                
-            } else {
-                res.render('error_page', {
-                        errorCode: "404",
-                        errorTitle: "Not Found",
-                        errorMsg: "This page does not exist"
-                    });
-            }
-            
-        }
-    });
+app.get("/courses/:courseTitle/:headingName", function(req, res) {
+  const requestedCourseTitle = req.params.courseTitle;
+  const subtitle = req.params.headingName;
+  
+  Course.findOne({ title: requestedCourseTitle }, function(err, curr_post) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (curr_post) {
+        let matchingHeading = null;
+        curr_post.contents.forEach(element => {
+          if (element.heading.headingName === subtitle) {
+            matchingHeading = element;
+          }
+        });
 
+        if (matchingHeading) {
+          if (req.cookies.current_user) {
+            res.render("post", {
+              startingContent: homeStartingContent,
+              posts: [curr_post], // Render only the matching course post
+              requestedCourse: curr_post,
+              renderSubtitle: subtitle,
+              role: req.cookies.current_user.role
+            });
+          } else {
+            console.log(curr_post);
+            res.render("post", {
+              startingContent: homeStartingContent,
+              posts: [curr_post], // Render only the matching course post
+              requestedCourse: curr_post,
+              renderSubtitle: subtitle,
+              role: ""
+            });
+          }
+        } else {
+          res.render("error_page", {
+            errorCode: "404",
+            errorTitle: "Not Found",
+            errorMsg: "This page does not exist"
+          });
+        }
+      } else {
+        res.render("error_page", {
+          errorCode: "404",
+          errorTitle: "Not Found",
+          errorMsg: "This page does not exist"
+        });
+      }
+    }
+  });
 });
 
 
