@@ -294,7 +294,6 @@ app.get('/dashboard', function (req, res) {
 app.get("/courses/:courseTitle/:headingName", function(req, res) {
   const requestedCourseTitle = req.params.courseTitle;
   const subtitle = req.params.headingName;
-  
   Course.findOne({ title: requestedCourseTitle }, function(err, curr_post) {
     if (err) {
       console.log(err);
@@ -311,17 +310,17 @@ app.get("/courses/:courseTitle/:headingName", function(req, res) {
           if (req.cookies.current_user) {
             res.render("post", {
               startingContent: homeStartingContent,
-              posts: [curr_post], // Render only the matching course post
-              requestedCourse: curr_post,
+              posts: curr_post, // Render only the matching course post
+              requestedCourse: requestedCourseTitle,
               renderSubtitle: subtitle,
               role: req.cookies.current_user.role
             });
           } else {
-            console.log(curr_post);
+            console.log(curr_post.contents[0].heading.headingContents);
             res.render("post", {
               startingContent: homeStartingContent,
-              posts: [curr_post], // Render only the matching course post
-              requestedCourse: curr_post,
+              posts: curr_post, // Render only the matching course post
+              requestedCourse: requestedCourseTitle,
               renderSubtitle: subtitle,
               role: ""
             });
