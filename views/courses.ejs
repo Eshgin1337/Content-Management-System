@@ -75,7 +75,8 @@
               <%= element.title %>
             </h5>
             <p class="card-text"><%- element.contents[0].heading.headingContents[0].content %></p>
-            <a href="#" class="btn btn-primary">Start learning <%= element.title %></a>
+            <a href="/courses/<%= element.title %>/<%= element.contents[0].heading.headingName %>"
+              class="btn btn-primary">Start learning <%= element.title %></a>
           </div>
         </div>
         <% }) %>
