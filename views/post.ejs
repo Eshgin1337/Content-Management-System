@@ -40,8 +40,9 @@
                 <img src="https://mpng.subpng.com/20190216/k/kisspng-carnegie-mellon-university-advanced-database-syste-project-2-concurrent-index-cmu-15-721-adva-5c68a8fdf135a9.916348971550362877988.jpg"
                     alt="Logo" style="width: 40px;" class="rounded-pill nav-link bi bi-list toggle-sidebar-btn">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -59,11 +60,11 @@
                         <li class="nav-item" style="white-space: nowrap;">
                             <a class="nav-link" href="/systemusers">Users</a>
                         </li>
-                    <% } else if (role==="editor") {%>
-                        <li class="nav-item" style="white-space: nowrap;">
-                            <a class="nav-link" href="/compose">Add tutorial</a>
-                        </li>
-                    <% } %>
+                        <% } else if (role==="editor" ) {%>
+                            <li class="nav-item" style="white-space: nowrap;">
+                                <a class="nav-link" href="/compose">Add tutorial</a>
+                            </li>
+                            <% } %>
                 </ul>
             </div>
         </div>
@@ -74,13 +75,15 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/courses">
                     <i class="bi bi-grid"></i>
-                    <span><%= requestedCourse %></span>
+                    <span>
+                        <%= requestedCourse %>
+                    </span>
                 </a>
             </li>
             <% posts.contents.forEach(function(heading) { %>
                 <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#<%= heading.headingName %>-nav" data-bs-toggle="collapse"
-                        href="#">
+                    <a class="nav-link collapsed" data-bs-target="#<%= heading.headingName %>-nav"
+                        data-bs-toggle="collapse" href="#">
                         <i class="bi bi-book-fill"></i>
                         <span>
                             <%= heading.headingName %>
@@ -90,7 +93,8 @@
                     <ul id="<%= heading.headingName %>-nav" class="nav-content collapse">
                         <% heading.heading.headingContents.forEach(element=> { %>
                             <li>
-                                <a href="/courses/<%= posts.title %>/<%= heading.headingName %>/<%= element.subtitle %>">
+                                <a
+                                    href="/courses/<%= posts.title %>/<%= heading.headingName %>/<%= element.subtitle %>">
                                     <i class="bi bi-circle"></i>
                                     <span>
                                         <%= element.subtitle %>
@@ -113,7 +117,24 @@
         </ul>
     </aside>
 
-    
+    <main id="main" class="main">
+        <% if (posts) { %>
+            <% posts.forEach(element=> { %>
+                <div class="card" style="width: 18rem;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/640px-Python-logo-notext.svg.png"
+                        class="card-img-top" alt="..." style="width: 200px; height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= element.title %>
+                        </h5>
+                        <p class="card-text"><%- element.contents[0].heading.headingContents[0].content %></p>
+                        <a href="/courses/<%= element.title %>/<%= element.contents[0].heading.headingName %>"
+                            class="btn btn-primary">Start learning <%= element.title %></a>
+                    </div>
+                </div>
+                <% }) %>
+                    <% } %>
+    </main>
 
 
     <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
