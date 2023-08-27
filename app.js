@@ -316,7 +316,6 @@ app.get("/courses/:courseTitle/:headingName", function(req, res) {
               role: req.cookies.current_user.role
             });
           } else {
-            console.log(curr_post.contents[0].heading.headingContents);
             res.render("post", {
               startingContent: homeStartingContent,
               posts: curr_post, // Render only the matching course post
