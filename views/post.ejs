@@ -76,25 +76,25 @@
                 <a class="nav-link collapsed" href="/courses">
                     <i class="bi bi-grid"></i>
                     <span>
-                        <%= requestedCourse %>
+                        <%= requestedCourseTitle %>
                     </span>
                 </a>
             </li>
-            <% posts.contents[0].forEach(function(heading) { %>
+            <% posts.contents.forEach(function(heading) { %>
                 <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#<%= heading.headingName %>-nav"
+                    <a class="nav-link collapsed" data-bs-target="#<%= heading.heading.headingName %>-nav"
                         data-bs-toggle="collapse" href="#">
                         <i class="bi bi-book-fill"></i>
                         <span>
-                            <%= heading.headingName %>
+                            <%= heading.heading.headingName %>
                         </span>
                         <i class="bi bi-chevron-down ms-auto"></i>
                     </a>
-                    <ul id="<%= heading.headingName %>-nav" class="nav-content collapse">
+                    <ul id="<%= heading.heading.headingName %>-nav" class="nav-content collapse">
                         <% heading.heading.headingContents.forEach(element=> { %>
                             <li>
                                 <a
-                                    href="/courses/<%= posts.title %>/<%= heading.headingName %>/<%= element.subtitle %>">
+                                    href="/courses/<%= posts.title %>/<%= heading.heading.headingName %>/<%= element.subtitle %>">
                                     <i class="bi bi-circle"></i>
                                     <span>
                                         <%= element.subtitle %>
@@ -119,21 +119,22 @@
 
     <main id="main" class="main">
         <% if (posts) { %>
-            <% posts.forEach(element=> { %>
-                <div class="card" style="width: 18rem;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/640px-Python-logo-notext.svg.png"
-                        class="card-img-top" alt="..." style="width: 200px; height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%= element.title %>
-                        </h5>
-                        <p class="card-text"><%- element.contents[0].heading.headingContents[0].content %></p>
-                        <a href="/courses/<%= element.title %>/<%= element.contents[0].heading.headingName %>"
-                            class="btn btn-primary">Start learning <%= element.title %></a>
-                    </div>
-                </div>
-                <% }) %>
-                    <% } %>
+            <% posts.contents.forEach(element=> { %>
+                <% if (element.heading.headingName===headingName) { %>
+                    <% element.heading.headingContents.forEach(headingContent=> { %>
+                        <% if (headingContent.subtitle===headingSubtitle) { %>
+                            <p>
+                                <%= headingSubtitle %>
+                            </p>
+                            <p><%- headingContent.content %></p>
+                            <% } %>
+                                <% }) %>
+                                    <% } %>
+                                        <p>
+                                            <%= %>
+                                        </p>
+                                        <% }) %>
+                                            <% } %>
     </main>
 
 
