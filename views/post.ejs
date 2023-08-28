@@ -80,40 +80,42 @@
                     </span>
                 </a>
             </li>
-            <% posts.contents.forEach(function(heading) { %>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#<%= heading.heading.headingName %>-nav"
-                        data-bs-toggle="collapse" href="#">
-                        <i class="bi bi-book-fill"></i>
-                        <span>
-                            <%= heading.heading.headingName %>
-                        </span>
-                        <i class="bi bi-chevron-down ms-auto"></i>
-                    </a>
-                    <ul id="<%= heading.heading.headingName %>-nav" class="nav-content collapse">
-                        <% heading.heading.headingContents.forEach(element=> { %>
-                            <li>
-                                <a
-                                    href="/courses/<%= posts.title %>/<%= heading.heading.headingName %>/<%= element.subtitle %>">
-                                    <i class="bi bi-circle"></i>
-                                    <span>
-                                        <%= element.subtitle %>
-                                    </span>
-                                </a>
-                            </li>
-                            <% }); %>
-                    </ul>
-                </li>
-                <% }); %>
-                    <% if (role) { %>
-                        <li class="nav-heading mt-5">Pages</li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="http://localhost:3000/logout">
-                                <i class="bi bi-arrow-right-square"></i>
-                                <span>Log out</span>
-                            </a>
-                        </li>
-                        <% } %>
+            <% let mynum=1; %>
+                <% posts.contents.forEach(function(heading) { %>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#nav<%= mynum %>" data-bs-toggle="collapse"
+                            href="#">
+                            <i class="bi bi-book-fill"></i>
+                            <span>
+                                <%= heading.heading.headingName %>
+                            </span>
+                            <i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="nav<%= mynum %>" class="nav-content collapse">
+                            <% heading.heading.headingContents.forEach(element=> { %>
+                                <li>
+                                    <a
+                                        href="/courses/<%= posts.title %>/<%= heading.heading.headingName %>/<%= element.subtitle %>">
+                                        <i class="bi bi-circle"></i>
+                                        <span>
+                                            <%= element.subtitle %>
+                                        </span>
+                                    </a>
+                                </li>
+                                <% }); %>
+                        </ul>
+                    </li>
+                    <% mynum=mynum + 1; %>
+                        <% }); %>
+                            <% if (role) { %>
+                                <li class="nav-heading mt-5">Pages</li>
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" href="http://localhost:3000/logout">
+                                        <i class="bi bi-arrow-right-square"></i>
+                                        <span>Log out</span>
+                                    </a>
+                                </li>
+                                <% } %>
         </ul>
     </aside>
 
