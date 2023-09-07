@@ -132,6 +132,7 @@ app.get("/", function(req, res){
                 if (err) {
                     console.log(err);
                 } else {
+                    console.log(posts[1].title);
                     res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
@@ -145,7 +146,7 @@ app.get("/", function(req, res){
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(typeof posts);
+                    console.log(posts[1].title);
                     res.render("courses", {
                         startingContent: homeStartingContent,
                         posts: posts,
@@ -812,7 +813,7 @@ app.post('/createCourse', upload.single('profilePicture'), (req, res) => {
   const newCourse = new Course({ title, profilePicture: req.file.filename });
   newCourse.save()
     .then(savedCourse => {
-      res.redirect('/courses');
+      res.redirect('/');
     })
     .catch(error => {
       console.error('Failed to create the course:', error);
