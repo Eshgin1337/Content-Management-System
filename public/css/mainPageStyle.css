@@ -55,6 +55,22 @@ h6 {
     background-color: #E8E8E8;
 }
 
+/* Courses section */
+
+/* add padding to courses section */
+main {
+    padding-top: 5px;
+    margin-bottom: 54px;
+    height: max-content;
+}
+
+/* adjust padding for smaller screens */
+@media only screen and (max-width: 768px) {
+    main {
+        padding-top: 130px;
+    }
+}
+
 .hero-section {
     background-color: #3A98B9;
     border-radius: 20px;
@@ -338,4 +354,110 @@ nav ul li a.active {
     #contact form {
         max-width: 90%;
     }
+}
+
+
+/* add greeting to courses section */
+h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-top: 2rem;
+    color: #555;
+}
+
+
+/* Style for the row */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Style for the course container */
+.single-course {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* Style for the course image */
+.course-img {
+    height: 200px;
+    overflow: hidden;
+}
+
+/* Style for the course image */
+.course-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Style for the course title */
+.course-caption h4 {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+/* Style for the course rating */
+.course-ratting {
+    color: #feca57;
+    font-size: 16px;
+}
+
+/* Style for the course reviews */
+.course-cap-mid ul {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+    padding-left: 0;
+    list-style: none;
+}
+
+/* Style for the course stats */
+.course-cap-bottom ul {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+    padding-left: 0;
+    list-style: none;
+}
+
+/* Style for the course stats icons */
+.course-cap-bottom ul li i {
+    margin-right: 5px;
+}
+
+/* Style for the course price */
+.course-cap-bottom span {
+    font-size: 20px;
+    font-weight: 700;
+    color: #feca57;
+}
+
+
+/* Footer */
+.footer-section {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: #fff;
+}
+
+.footer-section.dark-bg {
+    background-color: #333;
+    color: #fff;
+}
+
+.footer-section.dark-bg a {
+    color: #fff;
+}
+
+.custom-padding {
+    padding-top: 50px;
+    /* adjust value to your liking */
 }
