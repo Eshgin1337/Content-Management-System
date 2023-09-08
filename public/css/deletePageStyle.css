@@ -1,0 +1,52 @@
+/* Style for the collapse menus */
+.collapsible {
+    cursor: pointer;
+    padding: 0.75rem;
+    background-color: #f9f9f9;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+.collapsible:hover {
+    background-color: #e6e6e6;
+}
+
+.collapsible:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.collapsible.active:after {
+    content: "\2212";
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.collapsible-content.show {
+    max-height: 500px;
+    /* Adjust the maximum height as needed */
+}
+
+/* Style for the delete options */
+.delete-options {
+    margin-top: 1rem;
+}
+
+.delete-option-label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+/* Style for the delete button */
+.delete-button {
+    margin-top: 1rem;
+}
