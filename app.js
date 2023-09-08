@@ -106,52 +106,44 @@ app.get("/", function(req, res){
         if (req.cookies.current_user) {
             const userParams = req.cookies.current_user;
             Course.find({}, function (err, posts) {
-                
+
                 if (err) {
-                console.log(err);
+                    console.log(err);
                 } else {
-                    if (userParams.role === "admin") {
+
                         res.render("courses", {
                             startingContent: homeStartingContent,
-                            posts: posts,
+                            posts: filteredPosts,
                             role: "admin"
                         });
-                    } else if(userParams.role === "editor" || userParams.role === "user") {
+
                         res.render("courses", {
                             startingContent: homeStartingContent,
-                            posts: posts,
+                            posts: filteredPosts,
                             role: "editor"
                         });
+                        }
                     }
-                    
                 }
-            }); 
+                });
+
         } else {
-            req.session.isAuth = false;
+
             Course.find({}, function (err, posts) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(posts[1].title);
-                    res.render("courses", {
-                        startingContent: homeStartingContent,
-                        posts: posts,
-                        role: ""
-                    });
+
                 }
             });
+
         }
     } else {
             Course.find({}, function (err, posts) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(posts[1].title);
-                    res.render("courses", {
-                        startingContent: homeStartingContent,
-                        posts: posts,
-                        role: ""
-                    });
+
                 }
             });
     } 
