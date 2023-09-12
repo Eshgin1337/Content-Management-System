@@ -11,4 +11,4 @@ MongoDB installed and running locally or on a remote server.
 Basic knowledge of Express.js, EJS, and MongoDB.
 Understanding of environment variables and how to use .env files.
 
-### Writing README in progress...
+<i> Writing README in progress... </i>
