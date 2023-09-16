@@ -1,4 +1,5 @@
 # Tutorials Blog Website
+Welcome to the Tutorials Blog Website, a Node.js-based web application that allows admins to create courses and manage user privileges. Users can add courses and their contents. Please follow the instructions below to get started.
 
 # Table of Contents
 <ul> 
