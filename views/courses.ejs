@@ -48,16 +48,9 @@
           </li>
           <% if (role==="admin" ) { %>
             <li class="nav-item" style="white-space: nowrap;">
-              <a class="nav-link" href="/compose">Add tutorial</a>
-            </li>
-            <li class="nav-item" style="white-space: nowrap;">
               <a class="nav-link" href="/systemusers">Users</a>
             </li>
-            <% } else if (role==="editor" ) {%>
-              <li class="nav-item" style="white-space: nowrap;">
-                <a class="nav-link" href="/compose">Add tutorial</a>
-              </li>
-              <% } %>
+            <% } %>
         </ul>
       </div>
     </div>
@@ -66,19 +59,19 @@
   <main id="main" class="main">
     <% if (posts) { %>
       <% posts.forEach(element=> { %>
-        <div class="card" style="width: 18rem;">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/640px-Python-logo-notext.svg.png"
-            class="card-img-top" alt="..." style="width: 200px; height: 200px;">
-          <div class="card-body">
-            <h5 class="card-title">
-              <%= element.title %>
-            </h5>
-            <p class="card-text"><%- element.contents[0].heading.headingContents[0].content %></p>
-            <a href="/courses/<%= element.title %>/<%= element.contents[0].heading.headingName %>/<%= element.contents[0].heading.headingContents[0].subtitle %>"
-              class="btn btn-primary">Start learning <%= element.title %></a>
+          <div class="card" style="width: 18rem;">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/640px-Python-logo-notext.svg.png"
+              class="card-img-top" alt="..." style="width: 200px; height: 200px;">
+            <div class="card-body">
+              <h5 class="card-title">
+                <%= element.title %>
+              </h5>
+              <p class="card-text"><%- element.contents[0].heading.headingContents[0].content %></p>
+              <a href="/courses/<%= element.title %>/<%= element.contents[0].heading.headingName %>/<%= element.contents[0].heading.headingContents[0].subtitle %>"
+                class="btn btn-primary">Start learning <%= element.title %></a>
+            </div>
           </div>
-        </div>
         <% }) %>
           <% } %>
   </main>

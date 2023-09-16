@@ -54,14 +54,14 @@
                     </li>
                     <% if (role==="admin" ) { %>
                         <li class="nav-item" style="white-space: nowrap;">
-                            <a class="nav-link" href="/compose">Add tutorial</a>
+                            <a class="nav-link" href="/compose/<%= requestedCourseTitle %>">Add tutorial</a>
                         </li>
                         <li class="nav-item" style="white-space: nowrap;">
                             <a class="nav-link" href="/systemusers">Users</a>
                         </li>
                     <% } else if (role==="editor") {%>
                         <li class="nav-item" style="white-space: nowrap;">
-                            <a class="nav-link" href="/compose">Add tutorial</a>
+                            <a class="nav-link" href="/compose/<%= requestedCourseTitle %>">Add tutorial</a>
                         </li>
                     <% } %>
                 </ul>

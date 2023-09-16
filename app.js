@@ -141,7 +141,6 @@ app.get("/", function(req, res){
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log(posts[1].title);
                         res.render("courses", {
                             startingContent: homeStartingContent,
                             posts: filteredPosts,
@@ -266,7 +265,6 @@ app.get("/compose/:course", function(req, res) {
       res.render("compose", { headings: null, error: null, course: courseName });
     } else {
       const headings = course.contents.map((content) => content.heading.headingName);
-      console.log(headings);
       res.render("compose", { headings: headings, error: null, course: courseName });
     }
   });
@@ -331,7 +329,6 @@ app.get("/courses/:courseTitle/:headingName/:headingSubtitle", function(req, res
         });
 
         if (matchingHeading && matchingHeadingSubtitle) {
-            console.log(curr_post);
           if (req.cookies.current_user) {
             res.render("post", {
               startingContent: homeStartingContent,
@@ -583,17 +580,13 @@ app.get('/logout', function (req, res) {
 
 
 app.post("/compose", function(req, res){
-    console.log(req.body);
     const existenceStatus = req.body.existence || "new";
     var currHeading = "";
     if (!req.body.heading && !req.body.selectHeading) {
         currHeading = "";
-        console.log("In if");
     } else if (!req.body.heading) {
-        console.log("In else if");
         currHeading = req.body.selectHeading;
     } else {
-        console.log("In else");
         currHeading = req.body.heading
     }
     const currContent = req.body.content;
@@ -603,13 +596,11 @@ app.post("/compose", function(req, res){
     if ((currHeading==="" || subtitle === "" || currContent === "")) {
         Course.findOne({title: courseName}, function (err, course) {
             const records = course;
-            console.log(course);
             const fields = ['title']
             if (records.contents.length === 0) {
                 res.render("compose", {headings: null, error: "Please do not leave the any field empty!", course: courseName}); 
             } else {
                 const headings = course.contents.map(content => content.heading);
-                console.log(headings);
                 res.render("compose", {headings: headings, error: "Please do not leave the any field empty!", course: courseName});
             }
         }); 
@@ -819,7 +810,6 @@ app.post('/createCourse', upload.single('profilePicture'), (req, res) => {
   // Access the uploaded file using req.file
   if (req.file) {
     // Handle the file, e.g., store it in the appropriate location or perform further processing
-    console.log('Uploaded file:', req.file);
   }
 
   // Access other form fields using req.body
