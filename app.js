@@ -10,7 +10,6 @@ const multer = require("multer");
 const path = require("path");
 const {body, validationResult} = require('express-validator');
 const bcrypt = require('bcrypt');
-const fs = require('fs');
 
 const app = express();
 
