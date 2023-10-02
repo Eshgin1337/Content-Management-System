@@ -295,7 +295,7 @@ app.get('/login', function (req, res) {
     if (!req.session.isAuth) {
         res.render('login', {emailError: null, passwordError: null, curr_email: null});
     } else {
-        res.redirect("/courses")
+        res.redirect("/")
     }
 });
 
@@ -519,7 +519,7 @@ app.post("/editpost/:title/:subtitle", function (req, res) {
                         } 
                         result.markModified('contents');
                         result.save();
-                        res.redirect("/courses")
+                        res.redirect("/")
                     } else {
                         res.redirect("/logout")
                     }
@@ -573,7 +573,7 @@ app.post("/edit/:username", function (req, res) {
 app.get('/logout', function (req, res) {
     res.clearCookie("current_user");
     req.session.isAuth = false;
-    res.redirect("/courses");
+    res.redirect("/");
 });
 
 
