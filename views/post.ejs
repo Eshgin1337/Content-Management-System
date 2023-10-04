@@ -40,9 +40,8 @@
                 <img src="https://mpng.subpng.com/20190216/k/kisspng-carnegie-mellon-university-advanced-database-syste-project-2-concurrent-index-cmu-15-721-adva-5c68a8fdf135a9.916348971550362877988.jpg"
                     alt="Logo" style="width: 40px;" class="rounded-pill nav-link bi bi-list toggle-sidebar-btn">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -60,20 +59,20 @@
                         <li class="nav-item" style="white-space: nowrap;">
                             <a class="nav-link" href="/systemusers">Users</a>
                         </li>
-                        <% } else if (role==="editor" ) {%>
-                            <li class="nav-item" style="white-space: nowrap;">
-                                <a class="nav-link" href="/compose/<%= requestedCourseTitle %>">Add tutorial</a>
-                            </li>
-                            <% } %>
+                    <% } else if (role==="editor") {%>
+                        <li class="nav-item" style="white-space: nowrap;">
+                            <a class="nav-link" href="/compose/<%= requestedCourseTitle %>">Add tutorial</a>
+                        </li>
+                    <% } %>
                 </ul>
             </div>
         </div>
     </nav>
 
     <aside id="sidebar" class="sidebar">
-
+    
         <ul class="sidebar-nav" id="sidebar-nav">
-
+    
             <li class="nav-item">
                 <a class="nav-link collapsed"
                     href="http://localhost:3000/courses/<%= requestedCourseTitle %>/<%= posts.contents[0].heading.headingName %>/<%= posts.contents[0].heading.headingContents[0].subtitle %>">
@@ -84,101 +83,96 @@
                 </a>
             </li>
             <% let mynum=1; %>
-                <% posts.contents.forEach(function(heading){ %>
-                    <% if (heading.heading.headingName===headingName) { %>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-target="#a<%= mynum %>-nav" data-bs-toggle="collapse" href="#"
-                                id="a<%- mynum %> ">
-                                <i class="bi bi-book-fill"></i>
-                                <span>
-                                    <%= heading.heading.headingName %>
-                                </span>
-                                <i class="bi bi-chevron-down ms-auto"></i>
-                            </a>
-                            <ul id="a<%= mynum %>-nav" class="nav-content collapse show"
-                                data-bs-parent="#a<%= mynum %>-nav">
-                                <!--  data-bs-parent="#<%= heading.title %>-nav" also possible-->
-                                <% heading.heading.headingContents.forEach(element=> { %>
-                                    <li>
-                                        <a
-                                            href="/courses/<%= posts.title %>/<%= heading.heading.headingName %>/<%= element.subtitle %>">
-                                            <i class="bi bi-circle"></i>
-                                            <span id="<%= element.subtitle %>">
-                                                <%= element.subtitle %>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <% }); %>
-                            </ul>
-                        </li>
-                        <% heading.heading.headingContents.forEach(element=> { %>
-                            <% if (element.subtitle===headingSubtitle) { %>
-                                <script>
-                                    var titleName = "<%= heading.headingName %>";
-                                    var subtitle = "<%= headingSubtitle %>";
-                                    document.getElementById(subtitle).style.color = "#4154f1";
-                                </script>
-                                <% } %>
-                                    <% }) %>
-                                        <% } else { %>
-                                            <li class="nav-item">
-                                                <a class="nav-link collapsed" data-bs-target="#a<%= mynum %>-nav"
-                                                    data-bs-toggle="collapse" href="#">
-                                                    <i class="bi bi-book-fill"></i><span>
-                                                        <%= heading.heading.headingName %>
-                                                    </span><i class="bi bi-chevron-down ms-auto"></i>
-                                                </a>
-                                                <ul id="a<%= mynum %>-nav" class="nav-content collapse"
-                                                    data-bs-parent="#a<%= mynum %>-nav">
-                                                    <!--  data-bs-parent="#<%= heading.title %>-nav" also possible-->
-                                                    <% heading.heading.headingContents.forEach(element=> { %>
-                                                        <li>
-                                                            <a
-                                                                href="/courses/<%= posts.title %>/<%= heading.heading.headingName %>/<%= element.subtitle %>">
-                                                                <i class="bi bi-circle"></i><span>
-                                                                    <%= element.subtitle %>
-                                                                </span>
-                                                            </a>
-                                                        </li>
-                                                        <% }); %>
-                                                </ul>
-                                            </li>
-                                            <% } %>
-                                                <% mynum=mynum + 1; %>
-                                                    <% }) %>
+            <% posts.contents.forEach(function(heading){ %>
+                <% if (heading.heading.headingName === headingName) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-target="#a<%= mynum %>-nav" data-bs-toggle="collapse" href="#"
+                            id="a<%- mynum %> ">
+                            <i class="bi bi-book-fill"></i>
+                            <span>
+                                <%= heading.heading.headingName %>
+                            </span>
+                            <i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="a<%= mynum %>-nav" class="nav-content collapse show"
+                            data-bs-parent="#a<%= mynum %>-nav">
+                            <!--  data-bs-parent="#<%= heading.title %>-nav" also possible-->
+                            <% heading.heading.headingContents.forEach(element=> { %>
+                                <li>
+                                    <a 
+                                        href="/courses/<%= posts.title %>/<%= heading.heading.headingName %>/<%= element.subtitle %>">
+                                        <i class="bi bi-circle"></i>
+                                        <span id="<%= element.subtitle %>">
+                                            <%= element.subtitle %>
+                                        </span>
+                                    </a>
+                                </li>
+                                <% }); %>
+                        </ul>
+                    </li>
+                    <% heading.heading.headingContents.forEach(element=> { %>
+                        <% if (element.subtitle === headingSubtitle) { %>
+                            <script>
+                                var titleName = "<%= heading.headingName %>";
+                                var subtitle = "<%= headingSubtitle %>";
+                                document.getElementById(subtitle).style.color = "#4154f1";
+                            </script>
+                        <% } %>
+                    <% }) %>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#a<%= mynum %>-nav"
+                            data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-book-fill"></i><span>
+                                <%= heading.heading.headingName %>
+                            </span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="a<%= mynum %>-nav" class="nav-content collapse"
+                            data-bs-parent="#a<%= mynum %>-nav">
+                            <!--  data-bs-parent="#<%= heading.title %>-nav" also possible-->
+                            <% heading.heading.headingContents.forEach(element=> { %>
+                                <li>
+                                    <a href="/courses/<%= posts.title %>/<%= heading.heading.headingName %>/<%= element.subtitle %>">
+                                        <i class="bi bi-circle"></i><span>
+                                            <%= element.subtitle %>
+                                        </span>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </li>
+                    <% } %>
+                <% mynum=mynum + 1; %>
+            <% }) %>
 
-                                                        <% if (role) { %>
-                                                            <li class="nav-heading mt-5">Pages</li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link collapsed"
-                                                                    href="http://localhost:3000/logout">
-                                                                    <i class="bi bi-arrow-right-square"></i>
-                                                                    <span>Log out</span>
-                                                                </a>
-                                                            </li>
-                                                            <% } %>
+                            <% if (role) { %>
+                                <li class="nav-heading mt-5">Pages</li>
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed"
+                                        href="http://localhost:3000/logout">
+                                        <i class="bi bi-arrow-right-square"></i>
+                                        <span>Log out</span>
+                                    </a>
+                                </li>
+                            <% } %>
         </ul>
-
+    
     </aside>
 
     <main id="main" class="main">
         <% if (posts) { %>
             <% posts.contents.forEach(element=> { %>
-                <% if (element.heading.headingName===headingName) { %>
-                    <% element.heading.headingContents.forEach(headingContent=> { %>
-                        <% if (headingContent.subtitle===headingSubtitle) { %>
-                            <p>
-                                <%= headingSubtitle %>
-                            </p>
+                <% if (element.heading.headingName === headingName) { %>
+                    <% element.heading.headingContents.forEach(headingContent => { %>
+                        <% if (headingContent.subtitle === headingSubtitle) { %>
+                            <p><%= headingSubtitle %></p>
                             <p><%- headingContent.content %></p>
-                            <% } %>
-                                <% }) %>
-                                    <% } %>
-                                        <p>
-                                            <%= %>
-                                        </p>
-                                        <% }) %>
-                                            <% } %>
+                        <% } %>
+                    <% }) %>
+                <% } %>
+                <p><%=  %></p>
+            <% }) %>
+        <% } %>
     </main>
 
 
